@@ -1,35 +1,21 @@
-// {
-//    region: {
-//    name: "Africa",
-//    avgAge: 19.7,
-//    avgDailyIncomeInUSD: 5,
-//    avgDailyIncomePopulation: 0.71
-//    },
-//    periodType: "days",
-//    timeToElapse: 58,
-//    reportedCases: 674,
-//    population: 66622705,
-//    totalHospitalBeds: 1380614
-//    }
+function convertToDays(period, periodType) {
+  let days;
+  if (periodType === 'days') {
+    days = period;
+  } else if (periodType === 'weeks') {
+    days = period * 7;
+  } else {
+    days = period * 30;
+  }
+  return days;
+}
 
-// {
-//    data: {}, // the input data you got
-//    impact: {}, // your best case estimation
-//    severeImpact: {} // your severe case estimation
-// }
 function infectionsByRequestedTime(
   currentlyInfected,
   timeToElapse,
   periodType
 ) {
-  let exp;
-  if (periodType === 'days') {
-    exp = Math.floor(timeToElapse / 3);
-  } else if (periodType === 'weeks') {
-    exp = Math.floor((timeToElapse * 7) / 3);
-  } else {
-    exp = (timeToElapse * 30) / 3;
-  }
+  const exp = Math.round(convertToDays(timeToElapse, periodType) / 3);
 
   const x = Math.floor(2 ** exp);
   return currentlyInfected * x;
@@ -43,6 +29,27 @@ function gethospitalBedsByRequestedTime(totalBeds, severeCases) {
   const availableBeds = 0.35 * totalBeds;
 
   return Math.ceil(availableBeds - severeCases);
+}
+
+function getCasesForICUByRequestedTime(infectionsByTime) {
+  return Math.ceil(0.05 * infectionsByTime);
+}
+
+function getCasesForVentilatorsByTime(infectionsByTime) {
+  return Math.ceil(0.02 * infectionsByTime);
+}
+
+function getDollarsInFlight(
+  infectionsByTime,
+  avgIncomePopu,
+  avgIncome,
+  period,
+  periodType
+) {
+  const days = convertToDays(period, periodType);
+  console.log(avgIncomePopu);
+
+  return Math.ceil(avgIncomePopu * infectionsByTime * avgIncome * days);
 }
 
 const covid19ImpactEstimator = (data) => {
@@ -83,6 +90,38 @@ const covid19ImpactEstimator = (data) => {
   finalOutput.severeImpact.hospitalBedsByRequestedTime = gethospitalBedsByRequestedTime(
     data.totalHospitalBeds,
     finalOutput.severeImpact.severeCasesByRequestedTime
+  );
+
+  finalOutput.impact.casesForICUByRequestedTime = getCasesForICUByRequestedTime(
+    finalOutput.impact.infectionsByRequestedTime
+  );
+
+  finalOutput.severeImpact.casesForICUByRequestedTime = getCasesForICUByRequestedTime(
+    finalOutput.severeImpact.infectionsByRequestedTime
+  );
+
+  finalOutput.impact.casesForVentilatorsByRequestedTime = getCasesForVentilatorsByTime(
+    finalOutput.impact.infectionsByRequestedTime
+  );
+
+  finalOutput.severeImpact.casesForVentilatorsByRequestedTime = getCasesForVentilatorsByTime(
+    finalOutput.severeImpact.infectionsByRequestedTime
+  );
+
+  finalOutput.impact.dollarsInFlight = getDollarsInFlight(
+    finalOutput.impact.infectionsByRequestedTime,
+    data.region.avgDailyIncomePopulation,
+    data.region.avgDailyIncomeInUSD,
+    data.region.timeToElapse,
+    data.region.periodType
+  );
+
+  finalOutput.severeImpact.dollarsInFlight = getDollarsInFlight(
+    finalOutput.severeImpact.infectionsByRequestedTime,
+    data.region.avgDailyIncomePopulation,
+    data.region.avgDailyIncomeInUSD,
+    data.region.timeToElapse,
+    data.region.periodType
   );
 
   return finalOutput;
