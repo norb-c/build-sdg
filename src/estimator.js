@@ -44,6 +44,7 @@ function gethospitalBedsByRequestedTime(totalBeds, severeCases) {
 }
 
 const covid19ImpactEstimator = (data) => {
+  console.log(data);
   const finalOutput = {
     data,
     impact: {},
