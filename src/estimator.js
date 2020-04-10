@@ -36,7 +36,7 @@ function getCasesForICUByRequestedTime(infectionsByTime) {
 }
 
 function getCasesForVentilatorsByTime(infectionsByTime) {
-  return Math.ceil(0.02 * infectionsByTime);
+  return Math.floor(0.02 * infectionsByTime);
 }
 
 function getDollarsInFlight(
@@ -110,16 +110,16 @@ const covid19ImpactEstimator = (data) => {
     finalOutput.impact.infectionsByRequestedTime,
     data.region.avgDailyIncomePopulation,
     data.region.avgDailyIncomeInUSD,
-    data.region.timeToElapse,
-    data.region.periodType
+    data.timeToElapse,
+    data.periodType
   );
 
   finalOutput.severeImpact.dollarsInFlight = getDollarsInFlight(
     finalOutput.severeImpact.infectionsByRequestedTime,
     data.region.avgDailyIncomePopulation,
     data.region.avgDailyIncomeInUSD,
-    data.region.timeToElapse,
-    data.region.periodType
+    data.timeToElapse,
+    data.periodType
   );
 
   return finalOutput;
