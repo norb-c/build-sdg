@@ -38,10 +38,10 @@ const covid19ImpactEstimator = (data) => {
   const finalOutput = {
     data,
     impact: {},
-    servereImpact: {}
+    severeImpact: {}
   };
   finalOutput.impact.currentlyInfected = data.reportedCases * 10;
-  finalOutput.servereImpact.currentlyInfected = data.reportedCases * 50;
+  finalOutput.severeImpact.currentlyInfected = data.reportedCases * 50;
 
   // infected for 30 days (could be a function that takes days)
   finalOutput.impact.infectionsByRequestedTime = infectionsByRequestedTime(
@@ -50,8 +50,8 @@ const covid19ImpactEstimator = (data) => {
     data.periodType
   );
 
-  finalOutput.servereImpact.infectionsByRequestedTime = infectionsByRequestedTime(
-    finalOutput.servereImpact.currentlyInfected,
+  finalOutput.severeImpact.infectionsByRequestedTime = infectionsByRequestedTime(
+    finalOutput.severeImpact.currentlyInfected,
     data.timeToElapse,
     data.periodType
   );
