@@ -36,7 +36,7 @@ function infectionsByRequestedTime(
 
 const covid19ImpactEstimator = (data) => {
   const finalOutput = {
-    data: {},
+    data,
     impact: {},
     servereImpact: {}
   };
