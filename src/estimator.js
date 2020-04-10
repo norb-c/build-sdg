@@ -40,7 +40,9 @@ function get15PercentOfInfectionsByRequestedTime(infections) {
 }
 
 function gethospitalBedsByRequestedTime(totalBeds, severeCases) {
-  return totalBeds - severeCases;
+  const availableBeds = 0.35 * totalBeds;
+
+  return Math.round(availableBeds - severeCases);
 }
 
 const covid19ImpactEstimator = (data) => {
