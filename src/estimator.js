@@ -31,10 +31,12 @@ function infectionsByRequestedTime(
     exp = (timeToElapse * 30) / 3;
   }
 
-  return currentlyInfected * 2 ** exp;
+  const x = Math.floor(2 ** exp);
+  return currentlyInfected * x;
 }
 
 const covid19ImpactEstimator = (data) => {
+  console.log(data);
   const finalOutput = {
     data,
     impact: {},
