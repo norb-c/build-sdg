@@ -15,7 +15,7 @@ function infectionsByRequestedTime(
   timeToElapse,
   periodType
 ) {
-  const exp = Math.round(convertToDays(timeToElapse, periodType) / 3);
+  const exp = Math.floor(convertToDays(timeToElapse, periodType) / 3);
 
   const x = Math.floor(2 ** exp);
   return currentlyInfected * x;
@@ -47,8 +47,6 @@ function getDollarsInFlight(
   periodType
 ) {
   const days = convertToDays(period, periodType);
-  console.log(avgIncomePopu);
-
   return Math.ceil(avgIncomePopu * infectionsByTime * avgIncome * days);
 }
 
