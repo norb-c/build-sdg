@@ -24,9 +24,9 @@ function infectionsByRequestedTime(
 ) {
   let exp;
   if (periodType === 'days') {
-    exp = timeToElapse / 3;
+    exp = Math.floor(timeToElapse / 3);
   } else if (periodType === 'weeks') {
-    exp = (timeToElapse * 7) / 3;
+    exp = Math.floor((timeToElapse * 7) / 3);
   } else {
     exp = (timeToElapse * 30) / 3;
   }
