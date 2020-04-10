@@ -35,8 +35,15 @@ function infectionsByRequestedTime(
   return currentlyInfected * x;
 }
 
+function get15PercentOfInfectionsByRequestedTime(infections) {
+  return 0.15 * infections;
+}
+
+function gethospitalBedsByRequestedTime(totalBeds, severeCases) {
+  return totalBeds - severeCases;
+}
+
 const covid19ImpactEstimator = (data) => {
-  console.log(data);
   const finalOutput = {
     data,
     impact: {},
@@ -45,7 +52,6 @@ const covid19ImpactEstimator = (data) => {
   finalOutput.impact.currentlyInfected = data.reportedCases * 10;
   finalOutput.severeImpact.currentlyInfected = data.reportedCases * 50;
 
-  // infected for 30 days (could be a function that takes days)
   finalOutput.impact.infectionsByRequestedTime = infectionsByRequestedTime(
     finalOutput.impact.currentlyInfected,
     data.timeToElapse,
@@ -56,6 +62,24 @@ const covid19ImpactEstimator = (data) => {
     finalOutput.severeImpact.currentlyInfected,
     data.timeToElapse,
     data.periodType
+  );
+
+  finalOutput.impact.severeCasesByRequestedTime = get15PercentOfInfectionsByRequestedTime(
+    finalOutput.impact.infectionsByRequestedTime
+  );
+
+  finalOutput.severeImpact.severeCasesByRequestedTime = get15PercentOfInfectionsByRequestedTime(
+    finalOutput.severeImpact.infectionsByRequestedTime
+  );
+
+  finalOutput.impact.hospitalBedsByRequestedTime = gethospitalBedsByRequestedTime(
+    data.totalHospitalBeds,
+    finalOutput.impact.severeCasesByRequestedTime
+  );
+
+  finalOutput.severeImpact.hospitalBedsByRequestedTime = gethospitalBedsByRequestedTime(
+    data.totalHospitalBeds,
+    finalOutput.severeImpact.severeCasesByRequestedTime
   );
 
   return finalOutput;
