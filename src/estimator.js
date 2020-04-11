@@ -51,7 +51,6 @@ function getDollarsInFlight(
 }
 
 const covid19ImpactEstimator = (data) => {
-  console.log(data);
   const finalOutput = {
     data,
     impact: {},
