@@ -28,7 +28,7 @@ function get15PercentOfInfectionsByRequestedTime(infections) {
 function gethospitalBedsByRequestedTime(totalBeds, severeCases) {
   const availableBeds = 0.35 * totalBeds;
 
-  return Math.ceil(availableBeds - severeCases);
+  return Math.floor(availableBeds - severeCases);
 }
 
 function getCasesForICUByRequestedTime(infectionsByTime) {
@@ -47,7 +47,7 @@ function getDollarsInFlight(
   periodType
 ) {
   const days = convertToDays(period, periodType);
-  return Math.ceil(avgIncomePopu * infectionsByTime * avgIncome * days);
+  return Math.floor((infectionsByTime * avgIncomePopu * avgIncome) / days);
 }
 
 const covid19ImpactEstimator = (data) => {
