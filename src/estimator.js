@@ -15,9 +15,9 @@ function infectionsByRequestedTime(
   timeToElapse,
   periodType
 ) {
-  const exp = Math.floor(convertToDays(timeToElapse, periodType) / 3);
+  const exp = Math.trunc(convertToDays(timeToElapse, periodType) / 3);
 
-  const x = Math.floor(2 ** exp);
+  const x = Math.trunc(2 ** exp);
   return currentlyInfected * x;
 }
 
@@ -28,15 +28,15 @@ function get15PercentOfInfectionsByRequestedTime(infections) {
 function gethospitalBedsByRequestedTime(totalBeds, severeCases) {
   const availableBeds = 0.35 * totalBeds;
 
-  return Math.floor(availableBeds - severeCases);
+  return Math.trunc(availableBeds - severeCases);
 }
 
 function getCasesForICUByRequestedTime(infectionsByTime) {
-  return Math.ceil(0.05 * infectionsByTime);
+  return Math.trunc(0.05 * infectionsByTime);
 }
 
 function getCasesForVentilatorsByTime(infectionsByTime) {
-  return Math.floor(0.02 * infectionsByTime);
+  return Math.trunc(0.02 * infectionsByTime);
 }
 
 function getDollarsInFlight(
@@ -47,7 +47,7 @@ function getDollarsInFlight(
   periodType
 ) {
   const days = convertToDays(period, periodType);
-  return Math.floor((infectionsByTime * avgIncomePopu * avgIncome) / days);
+  return Math.trunc((infectionsByTime * avgIncomePopu * avgIncome) / days);
 }
 
 const covid19ImpactEstimator = (data) => {
