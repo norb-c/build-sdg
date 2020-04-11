@@ -68,9 +68,9 @@ export const defaultHandler = (req, res) => {
   try {
     const result = estimator(req.body);
     return res.status(200).send({
-      result: { ...result },
-      success: true,
-      message: 'Successful'
+      data: result.data,
+      impact: result.impact,
+      severeImpact: result.severeImpact
     });
   } catch (error) {
     console.log(error);
@@ -86,9 +86,6 @@ export const xmlHandler = (req, res) => {
   res.set('Content-Type', 'application/xml');
   try {
     const result = estimator(req.body);
-    result.success = true;
-    result.message = 'Successful';
-
     const xmlResponse = xmlParser(result);
 
     return res.send(xmlResponse);

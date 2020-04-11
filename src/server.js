@@ -14,9 +14,10 @@ app.use(json());
 app.use(cors());
 app.use((req, res, next) => {
   const start = new Date().getTime();
+  console.log(req.body);
   res.on('finish', () => {
-    const elapsed = (new Date().getTime() - start) / 1000;
-    const str = `${start}\t\t${req.originalUrl}\t\tdone in ${elapsed} seconds \n`;
+    const elapsed = new Date().getTime() - start;
+    const str = `${req.method}\t\t${req.originalUrl}\t\t${req.res.statusCode}\t\tdone in ${elapsed} ms \n`;
     logToFile(str);
   });
   next();
