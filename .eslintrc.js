@@ -14,6 +14,7 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module'
   },
+
   rules: {
     'comma-dangle': ['error', 'never'],
     'no-param-reassign': ['error', { props: false }],
