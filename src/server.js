@@ -27,6 +27,10 @@ app.get('/api/v1/on-covid-19/logs', (req, res) => {
   res.sendFile('logs.log', { root: path.join(__dirname, '../') });
 });
 
+app.post('/api/v1/on-covid-19/logs', (req, res) => {
+  res.sendFile('logs.log', { root: path.join(__dirname, '../') });
+});
+
 app.post(
   '/api/v1/on-covid-19',
   celebrate({
