@@ -17,18 +17,10 @@ app.use((req, res, next) => {
   console.log(req.body);
   res.on('finish', () => {
     const elapsed = new Date().getTime() - start;
-    const str = `${req.method}\t\t${req.originalUrl}\t\t${req.res.statusCode}\t\tdone in ${elapsed} ms \n`;
+    const str = `${req.method}\t\t${req.originalUrl}\t\t${req.res.statusCode}\t\t${elapsed}ms\n`;
     logToFile(str);
   });
   next();
-});
-
-app.get('/api/v1/on-covid-19/logs', (req, res) => {
-  res.sendFile('logs.log', { root: path.join(__dirname, '../') });
-});
-
-app.post('/api/v1/on-covid-19/logs', (req, res) => {
-  res.sendFile('logs.log', { root: path.join(__dirname, '../') });
 });
 
 app.post(
@@ -54,6 +46,15 @@ app.post(
   }),
   xmlHandler
 );
+
+app.get('/api/v1/on-covid-19/logs', (req, res) => {
+  res.sendFile('logs.log', {
+    root: path.join(__dirname, '../'),
+    headers: {
+      'Content-Type': 'text/plain'
+    }
+  });
+});
 
 app.all('*', (req, res) => {
   res.status(404).json({
