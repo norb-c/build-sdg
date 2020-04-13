@@ -16,7 +16,10 @@ app.use((req, res, next) => {
   const start = new Date().getTime();
   console.log(req.body);
   res.on('finish', () => {
-    const elapsed = new Date().getTime() - start;
+    let elapsed = new Date().getTime() - start;
+    if (elapsed < 10) {
+      elapsed = '0'.concat(elapsed);
+    }
     const str = `${req.method}\t\t${req.originalUrl}\t\t${req.res.statusCode}\t\t${elapsed}ms\n`;
     logToFile(str);
   });
@@ -48,12 +51,7 @@ app.post(
 );
 
 app.get('/api/v1/on-covid-19/logs', (req, res) => {
-  res.sendFile('logs.log', {
-    root: path.join(__dirname, '../'),
-    headers: {
-      'Content-Type': 'text/plain'
-    }
-  });
+  res.sendFile('logs.log', { root: path.join(__dirname, '../') });
 });
 
 app.all('*', (req, res) => {
